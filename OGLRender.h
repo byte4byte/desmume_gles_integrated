@@ -326,7 +326,10 @@ EXTERNOGLEXT(PFNGLDELETERENDERBUFFERSEXTPROC, glDeleteRenderbuffersEXT)
 	// modification. In other words, these are one-to-one drop-in replacements.
 	typedef GLclampf GLclampd;
 	#define glClearDepth(depth) glClearDepthf(depth)
+
+#ifndef OPENGL_VARIANT_ES
 	#define glDrawBuffer(x) glDrawBuffers(1, ((GLenum[]){x}))
+#endif
 
 	// 1D textures may not exist for a particular OpenGL variant, so they will be promoted to
 	// 2D textures instead. Implementations need to modify their GLSL shaders accordingly to
@@ -1021,5 +1024,41 @@ public:
 	virtual Render3DError RenderFinish();
 	virtual Render3DError RenderFlush(bool willFlushBuffer32, bool willFlushBuffer16);
 };
+
+#ifdef OPENGL_VARIANT_ES
+
+#define glDrawBuffer my_glDrawBuffer
+
+static inline void my_glDrawBuffer(GLenum attach) {
+    switch(attach) {
+        case GL_NONE: {
+            GLenum bufs[1] = {GL_NONE };
+            glDrawBuffers(1, bufs);
+            break;
+        }
+        case GL_COLOR_ATTACHMENT0: {
+            GLenum bufs[1] = { attach };
+            glDrawBuffers(1, bufs);
+            break;
+        }
+        case GL_COLOR_ATTACHMENT1: {
+            GLenum bufs[2] = {GL_NONE, attach };
+            glDrawBuffers(2, bufs);
+            break;
+        }
+        case GL_COLOR_ATTACHMENT2: {
+            GLenum bufs[3] = {GL_NONE, GL_NONE, attach };
+            glDrawBuffers(3, bufs);
+            break;
+        }
+        case GL_COLOR_ATTACHMENT3: {
+            GLenum bufs[4] = {GL_NONE, GL_NONE, GL_NONE, attach };
+            glDrawBuffers(4, bufs);
+            break;
+        }
+    }
+}
+
+#endif
 
 #endif // OGLRENDER_H
