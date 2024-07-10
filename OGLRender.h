@@ -27,14 +27,12 @@
 #include "render3D.h"
 #include "types.h"
 
-#include "ec.h"
-
 #define GL_TEXTURE_MAX_ANISOTROPY_EXT 		0x84FE
 #define GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT 	0x84FF
 #define GL_BGRA								0x80E1
 
 // OPENGL PLATFORM-SPECIFIC INCLUDES
-#if defined(__ANGLE__) || defined(__ANDROID__)
+#if defined(__ANGLE__) || defined(__ANDROID__) || defined(__linux__)
 	#define OPENGL_VARIANT_ES
 	#define _NO_SDL_TYPES
 	#include <GLES3/gl3.h>

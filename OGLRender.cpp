@@ -99,6 +99,53 @@ CACHE_ALIGN const GLfloat divide6bitBy63_LUT[64]	= {0.0,             0.015873015
 const GLfloat PostprocessVtxBuffer[16]	= {-1.0f, -1.0f,  1.0f, -1.0f, -1.0f,  1.0f,  1.0f,  1.0f,
                                             0.0f,  0.0f,  1.0f,  0.0f,  0.0f,  1.0f,  1.0f,  1.0f};
 
+#ifdef OPENGL_VARIANT_ES
+	const GLenum GeometryDrawBuffersEnum[8][4] = {
+		{ OGL_COLOROUT_ATTACHMENT_ID, GL_NONE, GL_NONE, GL_NONE },
+		{ OGL_COLOROUT_ATTACHMENT_ID, GL_NONE, OGL_FOGATTRIBUTES_ATTACHMENT_ID, GL_NONE },
+		{ OGL_COLOROUT_ATTACHMENT_ID, OGL_POLYID_ATTACHMENT_ID, GL_NONE, GL_NONE },
+		{ OGL_COLOROUT_ATTACHMENT_ID, OGL_POLYID_ATTACHMENT_ID, OGL_FOGATTRIBUTES_ATTACHMENT_ID, GL_NONE },
+		{ OGL_COLOROUT_ATTACHMENT_ID, GL_NONE, GL_NONE, OGL_WORKING_ATTACHMENT_ID },
+		{ OGL_COLOROUT_ATTACHMENT_ID, GL_NONE, OGL_FOGATTRIBUTES_ATTACHMENT_ID, OGL_WORKING_ATTACHMENT_ID },
+		{ OGL_COLOROUT_ATTACHMENT_ID, OGL_POLYID_ATTACHMENT_ID, GL_NONE, OGL_WORKING_ATTACHMENT_ID },
+		{ OGL_COLOROUT_ATTACHMENT_ID, OGL_POLYID_ATTACHMENT_ID, OGL_FOGATTRIBUTES_ATTACHMENT_ID, OGL_WORKING_ATTACHMENT_ID }
+	};
+
+	const GLint GeometryAttachmentWorkingBuffer[8] = {
+		0,
+		0,
+		0,
+		0,
+		3,
+		3,
+		3,
+		3
+	};
+
+	const GLint GeometryAttachmentPolyID[8] = {
+		0,
+		0,
+		1,
+		1,
+		0,
+		0,
+		1,
+		1
+	};
+
+	const GLint GeometryAttachmentFogAttributes[8] = {
+		0,
+		2,
+		0,
+		2,
+		0,
+		2,
+		0,
+		2
+	};
+
+#else
+
 const GLenum GeometryDrawBuffersEnum[8][4] = {
 	{ OGL_COLOROUT_ATTACHMENT_ID, GL_NONE, GL_NONE, GL_NONE },
 	{ OGL_COLOROUT_ATTACHMENT_ID, OGL_FOGATTRIBUTES_ATTACHMENT_ID, GL_NONE, GL_NONE },
@@ -142,6 +189,8 @@ const GLint GeometryAttachmentFogAttributes[8] = {
 	0,
 	3
 };
+
+#endif
 
 bool BEGINGL()
 {
