@@ -2193,6 +2193,11 @@ Render3DError OpenGLRenderer_3_2::ReadBackPixels()
 			glUseProgram(OGLRef.programFramebufferRGBA6665OutputID[1]);
 			glDrawBuffer(OGL_WORKING_ATTACHMENT_ID);
 			glReadBuffer(OGL_WORKING_ATTACHMENT_ID);
+#ifdef OPENGL_VARIANT_ES
+			glActiveTexture(GL_TEXTURE0 + OGLTextureUnitID_GColor);
+			glCopyTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, 0, 0, (GLsizei)this->_framebufferWidth, (GLsizei)this->_framebufferHeight);
+			glActiveTexture(GL_TEXTURE0);
+#endif
 		}
 		else
 		{
@@ -2200,6 +2205,11 @@ Render3DError OpenGLRenderer_3_2::ReadBackPixels()
 			glUseProgram(OGLRef.programFramebufferRGBA6665OutputID[0]);
 			glDrawBuffer(OGL_COLOROUT_ATTACHMENT_ID);
 			glReadBuffer(OGL_COLOROUT_ATTACHMENT_ID);
+#ifdef OPENGL_VARIANT_ES
+			glActiveTexture(GL_TEXTURE0 + OGLTextureUnitID_FinalColor);
+			glCopyTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, 0, 0, (GLsizei)this->_framebufferWidth, (GLsizei)this->_framebufferHeight);
+			glActiveTexture(GL_TEXTURE0);
+#endif
 		}
 		
 		glViewport(0, 0, (GLsizei)this->_framebufferWidth, (GLsizei)this->_framebufferHeight);
