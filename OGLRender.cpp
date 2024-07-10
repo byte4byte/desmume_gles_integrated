@@ -1027,7 +1027,8 @@ static Render3D* OpenGLRendererCreate()
 	
 	// Check the driver's OpenGL version
 	OGLGetDriverVersion(oglVersionString, &_OGLDriverVersion.major, &_OGLDriverVersion.minor, &_OGLDriverVersion.revision);
-	
+
+#ifndef OPENGL_VARIANT_ES	
 	if (!IsOpenGLDriverVersionSupported(OGLRENDER_MINIMUM_DRIVER_VERSION_REQUIRED_MAJOR, OGLRENDER_MINIMUM_DRIVER_VERSION_REQUIRED_MINOR, OGLRENDER_MINIMUM_DRIVER_VERSION_REQUIRED_REVISION))
 	{
 		INFO("OpenGL: Driver does not support OpenGL v%u.%u.%u or later. Disabling 3D renderer.\n[ Driver Info -\n    Version: %s\n    Vendor: %s\n    Renderer: %s ]\n",
@@ -1037,6 +1038,7 @@ static Render3D* OpenGLRendererCreate()
 		ENDGL();
 		return newRenderer;
 	}
+#endif
 	
 	// Create new OpenGL rendering object
 	if (VARIANTID == OpenGLVariantID_ES_3_0)

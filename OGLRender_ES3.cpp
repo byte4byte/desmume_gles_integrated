@@ -29,7 +29,6 @@
 #include "debug.h"
 #include "NDSSystem.h"
 
-
 // Vertex shader for geometry, GLSL ES 3.00
 static const char *GeometryVtxShader_ES300 = {"\
 IN_VTX_POSITION  vec4 inPosition;\n\
@@ -249,16 +248,14 @@ void OGLLoadEntryPoints_ES_3_0()
 
 void OGLCreateRenderer_ES_3_0(OpenGLRenderer **rendererPtr)
 {
-	if (IsOpenGLDriverVersionSupported(3, 0, 0))
-	{
-		*rendererPtr = new OpenGLESRenderer_3_0;
-		(*rendererPtr)->SetVersion(3, 0, 0);
-	}
+	*rendererPtr = new OpenGLESRenderer_3_0;
+	(*rendererPtr)->SetVersion(3, 0, 0);
 }
 
 OpenGLESRenderer_3_0::OpenGLESRenderer_3_0()
 {
 	_variantID = OpenGLVariantID_ES_3_0;
+	_isShaderFixedLocationSupported = true;
 }
 
 Render3DError OpenGLESRenderer_3_0::InitExtensions()
